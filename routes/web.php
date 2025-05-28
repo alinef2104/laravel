@@ -14,7 +14,15 @@ use App\Http\Middleware\LogAcessoMiddleware;
 */
 
 Route::get('/', [App\Http\Controllers\Principal::class, 'principal']);
-Route::get('/dizer-ola', [App\Http\Controllers\Principal::class, 'dizerOla']);
-Route::get('/conectar', [App\Http\Controllers\Usuario::class, 'conectar']);
-Route::get('/desconectar', [App\Http\Controllers\Usuario::class, 'desconectar']);
+
+Route::get('cliente/add', [App\Http\Controllers\ClienteController::class, 'add'])->name('add-cliente');
+
+Route::post('cliente/add', [App\Http\Controllers\ClienteController::class, 'store'])->name('store-cliente');
+
+Route::get('cliente/list', [App\Http\Controllers\ClienteController::class, 'list'])->name('list-cliente');
+
+Route::get('cliente/remove/{id}', [App\Http\Controllers\ClienteController::class, 'remove'])->name('remove-cliente');
+
+
+
 
