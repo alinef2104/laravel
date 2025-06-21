@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Lista de Veículos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
         body {
             background-color: #f8f9fa;
