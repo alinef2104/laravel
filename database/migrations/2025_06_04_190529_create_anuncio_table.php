@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('anuncio', function (Blueprint $table) {
             $table->id();
+            $table->string('titulo', 255);
+            $table->text('descricao');
+            $table->decimal('preco', 10, 2);
+            $table->date('data_publicacao');
             $table->timestamps();
-            $table->string('marca', 255);
-            $table->string('modelo', 255);
-            $table->string('ano', 255);
-            $table->string('placa', 255);
-            $table->string('cor', 255);
         });
     }
 
@@ -30,4 +29,3 @@ return new class extends Migration
         Schema::dropIfExists('anuncio');
     }
 };
-

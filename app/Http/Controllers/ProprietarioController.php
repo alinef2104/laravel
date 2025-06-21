@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ProprietarioModel;
 
 class ProprietarioController extends Controller
 {
@@ -10,19 +11,31 @@ class ProprietarioController extends Controller
         return view('proprietario-formulario');
     }
 
-    function store(){
-            return view('proprietario-store');
+    function store(Request $dados){
+        if ($dados->id == '') {
+            $proprietario = new ProprietarioModel();
+            $proprietario->create($dados->all());
+        } else {
+            $proprietario = ProprietarioModel::find($dados->id); 
+            $update = $proprietario->update($dados->all()); 
+        }
+
+        $proprietarios = ProprietarioModel::all();
+        return view('proprietario-listar', ['proprietarios' => $proprietarios]);
     }
 
     function listar(){
-            return view('proprietario-listar');
+        $proprietarios = ProprietarioModel::all();
+        return view('proprietario-listar', ['proprietarios' => $proprietarios]);
     }
 
-    function remover(){
-        return view('proprietario-remover');
+    function remove($id){
+        ProprietarioModel::destroy($id);
+        return redirect()->route('proprietario-listar');
     }
 
-    function editar(){
-        return view('proprietario-editar');
+    function editar($id){
+        $proprietario = ProprietarioModel::find($id);
+        return view('proprietario-formulario', ['proprietario' => $proprietario]);
     }
 }

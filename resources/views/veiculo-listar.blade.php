@@ -1,34 +1,71 @@
-<style>
-    * {
-        outline: 1px solid #a3a3a3;
-    }
-</style>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Veículos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<table>
-    <thead>
-        <tr>
-            <th>Código</th>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>Ano</th>
-            <th>Placa</th>
-            <th>Cor</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-            <tr>
-                <td>id: 0</td>
-                <td>Marca: Wolksvagem</td>
-                <td>Modelo: Fusca</td>
-                <td>Ano: 1945</td>
-                <td>Placa: ABC-1234</td>
-                <td>Cor: Rosa</td>
-                <td>
-										<a href="/veiculo/remove/0">Excluir</a>
-                    <a href="/veiculo/update/0">Atualizar</a>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .table-container {
+            margin-top: 50px;
+        }
+        .btn-danger {
+            background-color: #e63946;
+            border: none;
+        }
+        .btn-danger:hover {
+            background-color: #c9182b;
+        }
+        .btn-primary {
+            background-color: #457b9d;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #1d3557;
+        }
+        .table th {
+            background: #4b6cb7;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container table-container">
+        <h2 class="text-center mb-4">Lista de Veículos</h2>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Ano</th>
+                    <th>Placa</th>
+                    <th>Cor</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($veiculos as $veiculo)
+                    <tr>
+                        <td>{{ $veiculo->id }}</td>
+                        <td>{{ $veiculo->marca }}</td>
+                        <td>{{ $veiculo->modelo }}</td>
+                        <td>{{ $veiculo->ano }}</td>
+                        <td>{{ $veiculo->placa }}</td>
+                        <td>{{ $veiculo->cor }}</td>
+                        <td>
+                            <a href="/veiculo/remove/{{ $veiculo->id }}" 
+                               class="btn btn-danger btn-sm me-1">Excluir</a>
+                            <a href="{{ route('veiculo-editar', $veiculo->id) }}" 
+                               class="btn btn-primary btn-sm">Atualizar</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('proprietario', function (Blueprint $table) {
             $table->id();
+            $table->string('nome', 255);
+            $table->string('cpf', 14);
+            $table->string('endereco', 255);
+            $table->string('telefone', 20);
             $table->timestamps();
-            $table->string('marca', 255);
-            $table->string('modelo', 255);
-            $table->string('ano', 255);
-            $table->string('placa', 255);
-            $table->string('cor', 255);
         });
     }
 
@@ -30,4 +29,3 @@ return new class extends Migration
         Schema::dropIfExists('proprietario');
     }
 };
-

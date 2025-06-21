@@ -3,28 +3,47 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\VeiculoModel;
 
 class VeiculoController extends Controller
 {
     function formulario(){
-			return view('veiculo-formulario');
+        return view('veiculo-formulario');
     }
 
     function store(Request $dados){
-        $veiculo = new VeiculoModel();
-        $veiculo->create($dados->all());
-    } 
+        if ($dados->id == '') {
+
+            $veiculo = new VeiculoModel();
+            $veiculo->create($dados->all());
+        } else {
+            
+            $veiculo = VeiculoModel::find($dados->id); 
+            $update = $veiculo->update($dados->all()); 
+        }
+        
+
+        $veiculos = VeiculoModel::all();
+        
+        return view('veiculo-listar', ['veiculos'=>$veiculos]);
+    }
 
     function listar(){
-            return view('veiculo-listar');
+        $veiculos = VeiculoModel::all();
+        
+        return view('veiculo-listar', ['veiculos'=>$veiculos]);
     }
 
-    function remover(){
-        return view('veiculo-remover');
-    }
+    function remove($id){
+        VeiculoModel::destroy($id);
 
-    function editar(){
-        return view('veiculo-editar');
+        return redirect()->route('veiculo-listar');
+    }
+    
+    function editar($id){
+				$veiculo = VeiculoModel::find($id);
+
+        return view('veiculo-formulario', ['veiculo' => $veiculo]);
     }
 }
 

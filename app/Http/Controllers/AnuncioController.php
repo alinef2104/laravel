@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AnuncioModel;
 
 class AnuncioController extends Controller
 {
@@ -10,19 +11,31 @@ class AnuncioController extends Controller
         return view('anuncio-formulario');
     }
 
-    function store(){
-            return view('anuncio-store');
+    function store(Request $dados){
+        if ($dados->id == '') {
+            $anuncio = new AnuncioModel();
+            $anuncio->create($dados->all());
+        } else {
+            $anuncio = AnuncioModel::find($dados->id); 
+            $update = $anuncio->update($dados->all()); 
+        }
+
+        $anuncios = AnuncioModel::all();
+        return view('anuncio-listar', ['anuncios' => $anuncios]);
     }
 
     function listar(){
-            return view('anuncio-listar');
+        $anuncios = AnuncioModel::all();
+        return view('anuncio-listar', ['anuncios' => $anuncios]);
     }
 
-    function remover(){
-        return view('anuncio-remover');
+    function remove($id){
+        AnuncioModel::destroy($id);
+        return redirect()->route('anuncio-listar');
     }
 
-    function editar(){
-        return view('anuncio-editar');
+    function editar($id){
+        $anuncio = AnuncioModel::find($id);
+        return view('anuncio-formulario', ['anuncio' => $anuncio]);
     }
 }
