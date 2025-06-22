@@ -4,30 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AnuncioModel;
+use App\Models\ProprietarioModel;
+use App\Models\VeiculoModel;
 
 class AnuncioController extends Controller
 {
-    function formulario(){
-        return view('anuncio-formulario');
+
+    function formulario($id = null){
+        $anuncio = AnuncioModel::find($id);
+        $proprietarios = ProprietarioModel::all();
+        $veiculos = VeiculoModel::all();
+
+        return view('anuncio-formulario', [
+            'anuncio' => $anuncio,
+            'proprietarios' => $proprietarios,
+            'veiculos' => $veiculos
+        ]);
     }
 
     function store(Request $dados){
         if ($dados->id == '') {
-            $anuncio = new AnuncioModel();
-            $anuncio->create($dados->all());
+            AnuncioModel::create($dados->all());
         } else {
-            $anuncio = AnuncioModel::find($dados->id); 
-            $update = $anuncio->update($dados->all()); 
+            $anuncio = AnuncioModel::find($dados->id);
+            $anuncio->update($dados->all());
         }
 
-        $anuncios = AnuncioModel::all();
-        return view('anuncio-listar', ['anuncios' => $anuncios]);
+        return redirect()->route('anuncio-listar');
     }
 
-    function listar(){
-        $anuncios = AnuncioModel::all();
-        return view('anuncio-listar', ['anuncios' => $anuncios]);
-    }
+function listar() {
+    $anuncios = AnuncioModel::all();
+    $proprietarios = ProprietarioModel::all()->keyBy('id'); // cria um array chaveado pelo id
+    $veiculos = VeiculoModel::all()->keyBy('id');
+
+    return view('anuncio-listar', [
+        'anuncios' => $anuncios,
+        'proprietarios' => $proprietarios,
+        'veiculos' => $veiculos
+    ]);
+}
+
 
     function remove($id){
         AnuncioModel::destroy($id);
@@ -36,6 +53,13 @@ class AnuncioController extends Controller
 
     function editar($id){
         $anuncio = AnuncioModel::find($id);
-        return view('anuncio-formulario', ['anuncio' => $anuncio]);
+        $proprietarios = ProprietarioModel::all();
+        $veiculos = VeiculoModel::all();
+
+        return view('anuncio-formulario', [
+            'anuncio' => $anuncio,
+            'proprietarios' => $proprietarios,
+            'veiculos' => $veiculos
+        ]);
     }
 }

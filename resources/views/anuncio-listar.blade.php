@@ -39,6 +39,8 @@
           <tr>
             <th>Código</th>
             <th>Título</th>
+            <th>Veículo</th>
+            <th>Proprietário</th>
             <th>Descrição</th>
             <th>Preço</th>
             <th>Data de Publicação</th>
@@ -50,6 +52,12 @@
           <tr>
             <td>{{ $anuncio->id }}</td>
             <td>{{ $anuncio->titulo }}</td>
+            <td>
+              {{ $anuncio->veiculo->marca ?? '—' }} 
+              {{ $anuncio->veiculo->modelo ?? '' }} 
+              ({{ $anuncio->veiculo->placa ?? '' }})
+            </td>
+            <td>{{ $anuncio->proprietario->nome ?? '—' }}</td>
             <td>{{ $anuncio->descricao }}</td>
             <td>R$ {{ number_format($anuncio->preco, 2, ',', '.') }}</td>
             <td>{{ date('d/m/Y', strtotime($anuncio->data_publicacao)) }}</td>

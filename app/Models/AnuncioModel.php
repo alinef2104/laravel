@@ -11,6 +11,15 @@ class AnuncioModel extends Model
 
     protected $table = 'anuncio';
 
-    protected $fillable = ['id', 'titulo', 'descricao', 'preco', 'data_publicacao'];
+    protected $fillable = ['id', 'titulo', 'descricao', 'preco', 'data_publicacao', 'proprietario_id', 'veiculo_id'];
+
+    public function veiculo() {
+    return $this->belongsTo(\App\Models\VeiculoModel::class, 'veiculo_id');
+    }
+
+    public function proprietario() {
+        return $this->belongsTo(\App\Models\ProprietarioModel::class, 'proprietario_id');
+    }
+
 }
 

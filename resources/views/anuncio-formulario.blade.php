@@ -67,6 +67,32 @@
                                 value="{{ $anuncio->data_publicacao ?? old('data_publicacao') }}" required>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="proprietario_id" class="form-label">Proprietário</label>
+                            <select name="proprietario_id" id="proprietario_id" class="form-select" required>
+                                <option value="">Selecione</option>
+                                @foreach ($proprietarios as $proprietario)
+                                    <option value="{{ $proprietario->id }}" 
+                                        {{ (isset($anuncio) && $anuncio->proprietario_id == $proprietario->id) ? 'selected' : '' }}>
+                                        {{ $proprietario->nome }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="veiculo_id" class="form-label">Veículo</label>
+                            <select name="veiculo_id" id="veiculo_id" class="form-select" required>
+                                <option value="">Selecione</option>
+                                @foreach ($veiculos as $veiculo)
+                                    <option value="{{ $veiculo->id }}" 
+                                        {{ (isset($anuncio) && $anuncio->veiculo_id == $veiculo->id) ? 'selected' : '' }}>
+                                        {{ $veiculo->marca }} - {{ $veiculo->modelo }} ({{ $veiculo->placa }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>    
+
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">
                                 {{ isset($anuncio) ? 'Atualizar' : 'Cadastrar' }}

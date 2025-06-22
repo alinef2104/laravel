@@ -18,6 +18,14 @@ return new class extends Migration
             $table->decimal('preco', 10, 2);
             $table->date('data_publicacao');
             $table->timestamps();
+
+            $table->unsignedBigInteger('proprietario_id');
+            $table->foreign('proprietario_id')->references('id')->on('proprietario');
+
+            $table->unsignedBigInteger('veiculo_id');
+            $table->foreign('veiculo_id')->references('id')->on('veiculo');
+            $table->unique('veiculo_id');
+
         });
     }
 
@@ -29,3 +37,4 @@ return new class extends Migration
         Schema::dropIfExists('anuncio');
     }
 };
+
