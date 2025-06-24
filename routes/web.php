@@ -13,7 +13,7 @@ use App\Http\Middleware\LogAcessoMiddleware;
 |
 */
 
-//Rotas de Veículos
+//Rotas de Veículos ---------------------------------------------------------------------------------------------------
 
 Route::get('/veiculo/formulario', [App\Http\Controllers\VeiculoController::class, 'formulario'])->name('veiculo-formulario');
 
@@ -26,7 +26,7 @@ Route::get('/veiculo/remove/{id}', [App\Http\Controllers\VeiculoController::clas
 Route::get('/veiculo/editar/{id}', [App\Http\Controllers\VeiculoController::class, 'editar'])->name('veiculo-editar');
 
 
-//Rotas de Proprietario
+//Rotas de Proprietario -------------------------------------------------------------------------------------------
 
 Route::get('/proprietario/formulario', [App\Http\Controllers\ProprietarioController::class, 'formulario'])->name('proprietario-formulario');
 
@@ -39,7 +39,7 @@ Route::get('/proprietario/remove/{id}', [App\Http\Controllers\ProprietarioContro
 Route::get('/proprietario/editar/{id}', [App\Http\Controllers\ProprietarioController::class, 'editar'])->name('proprietario-editar');
 
 
-//Rotas de Anuncio
+//Rotas de Anuncio ------------------------------------------------------------------------------------------------
 
 Route::get('/anuncio/formulario', [App\Http\Controllers\AnuncioController::class, 'formulario'])->name('anuncio-formulario');
 

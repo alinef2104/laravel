@@ -62,6 +62,7 @@
                                class="btn btn-primary btn-sm">Atualizar</a>
                         </td>
                     </tr>
+                    
                 @endforeach
             </tbody>
         </table>

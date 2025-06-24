@@ -33,17 +33,17 @@ class AnuncioController extends Controller
         return redirect()->route('anuncio-listar');
     }
 
-function listar() {
-    $anuncios = AnuncioModel::all();
-    $proprietarios = ProprietarioModel::all()->keyBy('id'); // cria um array chaveado pelo id
-    $veiculos = VeiculoModel::all()->keyBy('id');
+    function listar() {
+        $anuncios = AnuncioModel::all();
+        $proprietarios = ProprietarioModel::all()->keyBy('id'); 
+        $veiculos = VeiculoModel::all()->keyBy('id');
 
-    return view('anuncio-listar', [
-        'anuncios' => $anuncios,
-        'proprietarios' => $proprietarios,
-        'veiculos' => $veiculos
-    ]);
-}
+        return view('anuncio-listar', [
+            'anuncios' => $anuncios,
+            'proprietarios' => $proprietarios,
+            'veiculos' => $veiculos
+        ]);
+    }
 
 
     function remove($id){
