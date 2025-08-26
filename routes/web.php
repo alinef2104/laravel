@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\LogAcessoMiddleware;
+use App\Http\Controllers\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +15,14 @@ use App\Http\Middleware\LogAcessoMiddleware;
 |
 */
 
-Route::get('/', [App\Http\Controllers\Principal::class, 'principal'])->name('principal');
-Route::get('/adocao', [App\Http\Controllers\Adocao::class, 'adocao'])->name('adocao');
-Route::get('/cadastrar-animal', [App\Http\Controllers\CadastrarAnimal::class, 'cadastrarAnimal'])->name('cadastrar-animal');
-Route::get('/registrar', [App\Http\Controllers\Registrar::class, 'registrar'])->name('registrar');
-Route::get('/usuario', [App\Http\Controllers\Usuario::class, 'usuario'])->name('usuario');
-Route::get('/login', [App\Http\Controllers\Login::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

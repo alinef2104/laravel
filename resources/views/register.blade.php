@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head><title>Login</title></head>
+<head><title>Cadastro</title></head>
 <body>
-    <h2>Login</h2>
-
-    @if(session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
-    @endif
+    <h2>Cadastro</h2>
 
     @if($errors->any())
         <ul style="color: red;">
@@ -16,13 +12,15 @@
         </ul>
     @endif
 
-    <form action="{{ route('login') }}" method="POST">
+    <form action="{{ route('register') }}" method="POST">
         @csrf
+        <input type="text" name="name" value="{{ old('name') }}" placeholder="Nome"><br>
         <input type="email" name="email" value="{{ old('email') }}" placeholder="E-mail"><br>
         <input type="password" name="password" placeholder="Senha"><br>
-        <button type="submit">Entrar</button>
+        <input type="password" name="password_confirmation" placeholder="Confirme a senha"><br>
+        <button type="submit">Cadastrar</button>
     </form>
 
-    <p>Não tem conta? <a href="{{ route('register') }}">Cadastre-se</a></p>
+    <p>Já tem conta? <a href="{{ route('login') }}">Faça login</a></p>
 </body>
 </html>
