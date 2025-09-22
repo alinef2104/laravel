@@ -2,65 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Listar todos os posts
     public function index()
     {
-        //
+        $posts = Post::orderBy('created_at', 'desc')->get();
+        return response()->json($posts);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Criar novo post
+    public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'description' => 'required|string|max:255',
+            'picture' => 'nullable|string|max:255'
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorePostRequest $request)
-    {
-        //
-    }
+        $post = Post::create([
+            'description' => $request->description,
+            'picture' => $request->picture ?? null,
+            'data' => now() // Mantendo o campo data da sua tabela
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePostRequest $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post)
-    {
-        //
+        return response()->json([
+            'message' => 'Post criado com sucesso',
+            'post' => $post
+        ]);
     }
 }

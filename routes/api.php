@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +29,11 @@ Route::prefix('usuario')->group(function(){
     Route::post('editar', [App\Http\Controllers\UsuarioController::class, 'editar']);
     Route::post('perfil', [App\Http\Controllers\UsuarioController::class, 'perfil']);
 });
+
+
+
+Route::middleware('auth:sanctum')->prefix('posts')->group(function () {
+    Route::get('/', [PostController::class, 'index']); // Listar todos os posts
+    Route::post('criar', [PostController::class, 'store']); // Criar novo post
+});
+
