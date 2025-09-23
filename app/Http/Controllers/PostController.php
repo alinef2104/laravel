@@ -2,30 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    // Listar todos os posts
-    public function index()
+    // Listar todos os posts de todos os usuários
+    public function index(Request $request)
     {
-        $posts = Post::orderBy('created_at', 'desc')->get();
+        $posts = Post::with('user') // traz o usuário junto
+                     ->orderBy('created_at', 'desc')
+                     ->get();
+
         return response()->json($posts);
     }
 
-    // Criar novo post
+    // Criar post (apenas o usuário logado pode criar)
     public function store(Request $request)
     {
         $request->validate([
             'description' => 'required|string|max:255',
-            'picture' => 'nullable|string|max:255'
+            'picture' => 'nullable|string'
         ]);
 
         $post = Post::create([
+            'user_id' => $request->user()->id,
             'description' => $request->description,
-            'picture' => $request->picture ?? null,
-            'data' => now() // Mantendo o campo data da sua tabela
+            'picture' => $request->picture ?? null
         ]);
 
         return response()->json([

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 
 class UsuarioController extends Controller
 {
-   
-    function registrar(Request $request) 
+    // Registro de usuário
+    public function registrar(Request $request) 
     {
         $dados = $request->validate([
             'name' => 'required|string|max:255',
@@ -17,10 +18,21 @@ class UsuarioController extends Controller
             'password' => 'required|string|min:6|confirmed'
         ]);
 
+        // Criptografar a senha
         $dados['password'] = bcrypt($dados['password']);
-        $dados['picture'] = 'https://i.pinimg.com/564x/f3/6b/fa/f36bfa3b60559e7da0014f91250abf66.jpg';
-        $dados['status'] = 'active';
-        $dados['enabled'] = true;
+
+        // Campos opcionais
+        if (Schema::hasColumn('users', 'picture')) {
+            $dados['picture'] = 'https://i.pinimg.com/564x/f3/6b/fa/f36bfa3b60559e7da0014f91250abf66.jpg';
+        }
+
+        if (Schema::hasColumn('users', 'status')) {
+            $dados['status'] = 'active';
+        }
+
+        if (Schema::hasColumn('users', 'enabled')) {
+            $dados['enabled'] = true;
+        }
 
         $usuario = User::create($dados);
 
@@ -33,7 +45,8 @@ class UsuarioController extends Controller
         ], 201);
     }
 
-    function login(Request $request)
+    // Login
+    public function login(Request $request)
     {
         $credenciais = $request->validate([
             'email' => 'required|email',
@@ -42,7 +55,7 @@ class UsuarioController extends Controller
 
         $usuario = User::where('email', $credenciais['email'])->first();
 
-        if (!$usuario || !\Hash::check($credenciais['password'], $usuario->password)) {
+        if (!$usuario || !Hash::check($credenciais['password'], $usuario->password)) {
             return response()->json(['message' => 'Credenciais inválidas'], 401);
         }
 
@@ -55,16 +68,16 @@ class UsuarioController extends Controller
         ]);
     }
 
-
-    function logout(Request $request)
+    // Logout
+    public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logout realizado com sucesso.']);
     }
 
-
-    function fotoUpload(Request $request)
+    // Upload de foto
+    public function fotoUpload(Request $request)
     {
         $request->validate([
             'picture' => 'required|image|mimes:jpg,jpeg,png|max:2048'
@@ -73,7 +86,9 @@ class UsuarioController extends Controller
         $usuario = $request->user();
         $path = $request->file('picture')->store('pictures', 'public');
 
-        $usuario->update(['picture' => $path]);
+        if (Schema::hasColumn('users', 'picture')) {
+            $usuario->update(['picture' => $path]);
+        }
 
         return response()->json([
             'message' => 'Foto enviada com sucesso.',
@@ -81,21 +96,26 @@ class UsuarioController extends Controller
         ]);
     }
 
-
-    function desativarConta(Request $request)
+    // Desativar conta
+    public function desativar(Request $request)
     {
         $usuario = $request->user();
-        $usuario->update(['enabled' => false, 'status' => 'inactive']);
+
+        if (Schema::hasColumn('users', 'enabled') && Schema::hasColumn('users', 'status')) {
+            $usuario->update(['enabled' => false, 'status' => 'inactive']);
+        }
 
         return response()->json(['message' => 'Conta desativada com sucesso.']);
     }
 
-    function perfil(Request $request)
+    // Perfil
+    public function perfil(Request $request)
     {
         return response()->json($request->user());
     }
 
-    function editar(Request $request)
+    // Editar usuário
+    public function editar(Request $request)
     {
         $usuario = $request->user();
 
