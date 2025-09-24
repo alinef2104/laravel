@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class UsuarioController extends Controller
 {
@@ -18,10 +19,8 @@ class UsuarioController extends Controller
             'password' => 'required|string|min:6|confirmed'
         ]);
 
-        // Criptografar a senha
         $dados['password'] = bcrypt($dados['password']);
 
-        // Campos opcionais
         if (Schema::hasColumn('users', 'picture')) {
             $dados['picture'] = 'https://i.pinimg.com/564x/f3/6b/fa/f36bfa3b60559e7da0014f91250abf66.jpg';
         }
@@ -72,7 +71,6 @@ class UsuarioController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-
         return response()->json(['message' => 'Logout realizado com sucesso.']);
     }
 
@@ -87,7 +85,7 @@ class UsuarioController extends Controller
         $path = $request->file('picture')->store('pictures', 'public');
 
         if (Schema::hasColumn('users', 'picture')) {
-            $usuario->update(['picture' => $path]);
+            $usuario->update(['picture' => 'storage/' . $path]);
         }
 
         return response()->json([
