@@ -80,19 +80,25 @@ class UsuarioController extends Controller
         $request->validate([
             'picture' => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
-
-        $usuario = $request->user();
-        $path = $request->file('picture')->store('pictures', 'public');
-
-        if (Schema::hasColumn('users', 'picture')) {
-            $usuario->update(['picture' => 'storage/' . $path]);
+    
+        $user = $request->user();
+    
+        if (!$user) {
+            return response()->json(['error' => 'Usuário não autenticado'], 401);
         }
-
+    
+        $path = $request->file('picture')->store('profile_pics', 'public');
+    
+        $user->picture = $path;
+        $user->save();
+    
         return response()->json([
-            'message' => 'Foto enviada com sucesso.',
+            'message' => 'Foto atualizada com sucesso',
             'picture_url' => asset('storage/' . $path)
         ]);
     }
+    
+    
 
     // Desativar conta
     public function desativar(Request $request)

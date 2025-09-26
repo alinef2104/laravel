@@ -18,7 +18,7 @@ Route::prefix('usuario')->group(function() {
 // Usuário
 Route::middleware('auth:sanctum')->prefix('usuario')->group(function() {
     Route::post('logout', [UsuarioController::class, 'logout']);
-    Route::get('perfil', [UsuarioController::class, 'perfil']); // GET é mais correto que POST
+    Route::get('perfil', [UsuarioController::class, 'perfil']); 
     Route::post('editar', [UsuarioController::class, 'editar']);
     Route::post('foto-upload', [UsuarioController::class, 'fotoUpload']);
     Route::post('desativar-conta', [UsuarioController::class, 'desativar']);
@@ -26,6 +26,6 @@ Route::middleware('auth:sanctum')->prefix('usuario')->group(function() {
 
 // Posts 
 Route::middleware('auth:sanctum')->prefix('posts')->group(function () {
-    Route::get('/', [PostController::class, 'index']);       // Listar todos os posts
-    Route::post('criar', [PostController::class, 'store']);  // Criar novo post
+    Route::get('/', [PostController::class, 'index']);      
+    Route::post('criar', [PostController::class, 'store']);
 });
